@@ -1,0 +1,18 @@
+---
+
+# Also see the defaults of bihealth.sodar_core_app.
+
+# Git repository to get app from.
+varfish_git_repo: "https://github.com/bihealth/varfish-server.git"
+
+# Tag to use for email prefix.
+varfish_email_prefix: "[VarFish]"
+
+# Number of celery workers to spawn for default queue.
+varfish_celery_workers_default: 8
+
+# Number of celery workers to spawn for query queue.
+varfish_celery_workers_query: 8
+
+# Number of celery workers to spawn for import queue.
+varfish_celery_workers_import: 1

@@ -1,0 +1,73 @@
+---
+
+- name: Converge
+  hosts: all
+  pre_tasks:
+    # package setup
+    - name: update package repository (Debian)
+      apt: update_cache=true
+      when: ansible_os_family == "Debian"
+      changed_when: false  # hack for idempotency
+    - name: update package repository (Red Hat)
+      yum: update_cache=true
+      when: ansible_os_family == "RedHat"
+      changed_when: false  # hack for idempotency
+    - name: install netstat (Debian/Red Hat)
+      package: name=net-tools state=present
+      when: >
+        ansible_os_family == "Debian" or
+        ansible_os_family == "RedHat"
+    # basic setup / fixes
+    - name: basic server setup (includes locale)
+      include_role:
+        name: bihealth.basic_server
+    # postgres setup
+    - name: install postgres  # client before server -> pg_config in $PATH
+      include_role:
+        name: bihealth.postgres_client
+    - name: install postgres
+      include_role:
+        name: bihealth.postgres_server
+    - name: create postgres user
+      # for some reason, postgresql_user model fails in peer authentication
+      shell: |
+        set -eo pipefail
+        sudo -u postgres createuser varfish-test -w -s -d
+        sudo -u postgres \
+          psql -c \
+          "ALTER USER \"varfish-test\" WITH ENCRYPTED PASSWORD 'varfish-test';"
+        sudo -u postgres createdb -O varfish-test -E UTF-8 -l en_US.UTF-8 -T template0 \
+          varfish-test
+        touch /root/.pg_user_created
+      args:
+        executable: /bin/bash
+        creates: /root/.pg_user_created
+  environment:
+    # bihealth.varfish_server ---------------------------------------------------------------------
+    VARFISH_PARTITION_MODULUS_SMALLVARIANT: 4
+  vars:
+    # bihealth.sodar_core_app ---------------------------------------------------------------------
+    sodar_core_app_version: "master"  # "v0.16.1"
+    sodar_core_app_django_secret_key: "SOMESECRETKEYSOMESECRETKEYSOMESECRETKEYSOMESECRETKEY"
+    sodar_core_app_superuser_password: "junkpass"
+    sodar_core_app_enable_no_log: false
+    # bihealth.varfish_server ---------------------------------------------------------------------
+    varfish_celery_workers_default: 1
+    varfish_celery_workers_query: 1
+    varfish_celery_workers_import: 1
+    # bihealth.ssl_certs --------------------------------------------------------------------------
+    ssl_certs_certs:
+      - name: instance
+    # bihealth.postgres_server --------------------------------------------------------------------
+    postgres_server_version: "11"
+    postgres_server_max_worker_processes: 2
+    postgres_server_max_parallel_maintenance_workers: 1
+    postgres_server_max_parallel_workers_per_gather: 1
+    postgres_server_max_parallel_workers: 1
+    # bihealth.postgres_client --------------------------------------------------------------------
+    postgres_client_host: 127.0.0.1
+    postgres_client_db: varfish-test
+    postgres_client_user: varfish-test
+    postgres_client_password: varfish-test
+  roles:
+    - role: ansible-role-varfish-server
