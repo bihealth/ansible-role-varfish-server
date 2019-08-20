@@ -3,19 +3,42 @@
 # bihealth.sodar_core_app -------------------------------------------------------------------------
 
 sodar_core_app_name: varfish
+
 sodar_core_app_git_repo: "{{ varfish_git_repo }}"
+
 sodar_core_app_email_prefix: "{{ varfish_email_prefix }}"
+
 sodar_core_app_celery_enabled: true
+
 sodar_core_app_celeryd_workers:
-- name: default
-  queues: default
-  concurrency: "{{ varfish_celery_workers_default }}"
-- name: query
-  queues: query
-  concurrency: "{{ varfish_celery_workers_query }}"
-- name: import
-  queues: import
-  concurrency: "{{ varfish_celery_workers_import }}"
+  - name: default
+    queues: default
+    concurrency: "{{ varfish_celery_workers_default }}"
+  - name: query
+    queues: query
+    concurrency: "{{ varfish_celery_workers_query }}"
+  - name: import
+    queues: import
+    concurrency: "{{ varfish_celery_workers_import }}"
+
+sodar_core_app_backend_plugins:
+  - "timeline_backend"
+
+sodar_core_app_systemd_env_snippet: |
+  {% if varfish_sentry_dsn|length>0 %}
+  DJANGO_SENTRY_DSN="{{ varfish_sentry_dsn }}"
+  {% endif %}
+
+  VARFISH_ENABLE_CADD={{ 1 if varfish_enable_cadd else 0 }}
+  VARFISH_CADD_REST_API_URL={{ varfish_cadd_rest_api_url }}
+
+  VARFISH_ENABLE_JANNOVAR={{ 1 if varfish_enable_jannovar else 0 }}
+  VARFISH_JANNOVAR_REST_API_URL={{ varfish_jannovar_rest_api_url }}
+
+  VARFISH_ENABLE_EXOMISER_PRIORITISER={{ 1 if varfish_enable_exomiser_prioritiser else 0 }}
+  VARFISH_EXOMISER_PRIORITISER_API_URL={{ varfish_exomiser_prioritiser_api_url }}
+
+  VARFISH_ENABLE_SVS={{ 1 if varfish_enable_svs else 0 }}
 
 # bihealth.python3 --------------------------------------------------------------------------------
 

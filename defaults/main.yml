@@ -16,3 +16,28 @@ varfish_celery_workers_query: 8
 
 # Number of celery workers to spawn for import queue.
 varfish_celery_workers_import: 1
+
+# Optional DSN for Sentry integration.
+varfish_sentry_dsn: ""
+
+# Whether or not to enable Jannovar (a setup is recommended).
+varfish_enable_jannovar: false
+
+# REST API URL for Jannovar
+varfish_jannovar_rest_api_url: ""
+
+# Whether or not to enable CADD (optional, license required for commercial
+# usage).
+varfish_enable_cadd: false
+
+# REST API URL for CADD
+varfish_cadd_rest_api_url: ""
+
+# Whether or not to enable Exomiser prioritiser.
+varfish_enable_exomiser_prioritiser: false
+
+# Exomiser API URL.
+varfish_exomiser_prioritiser_api_url: ""
+
+# Enable experimental and unsupported SV filtration settings.
+varfish_enable_svs: false
