@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.1.2
+
+- Fixing queues configuration.
+
 ## v0.1.1
 
 - Adding more settings.

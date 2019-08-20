@@ -12,13 +12,16 @@ sodar_core_app_celery_enabled: true
 
 sodar_core_app_celeryd_workers:
   - name: default
-    queues: default
+    queues:
+      - default
     concurrency: "{{ varfish_celery_workers_default }}"
   - name: query
-    queues: query
+    queues:
+      - query
     concurrency: "{{ varfish_celery_workers_query }}"
   - name: import
-    queues: import
+    queues:
+      - import
     concurrency: "{{ varfish_celery_workers_import }}"
 
 sodar_core_app_backend_plugins:
