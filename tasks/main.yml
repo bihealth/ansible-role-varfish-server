@@ -1,0 +1,16 @@
+---
+
+- name: copy VarFish bashrc
+  copy:
+    src: bashrc.varfish
+    dest: /srv/{{ sodar_core_app_name }}-web/.bashrc.varfish
+    owner: "{{ sodar_core_app_name }}"
+    group: "{{ sodar_core_app_name }}"
+    mode: ug=rx,o=
+
+- name: source VarFish bashrc
+  blockinfile:
+    path: /srv/{{ sodar_core_app_name }}-web/.bashrc
+    marker: "# {mark} include VarFish app bashrc"
+    block: |
+      source /srv/{{ sodar_core_app_name }}-web/.bashrc.varfish

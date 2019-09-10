@@ -1,0 +1,68 @@
+# -----------------------------------------------------------------------------------------------
+# Function varfish-import-cases
+#
+# Run the manage.py import_case command.
+# -----------------------------------------------------------------------------------------------
+
+varfish-import-cases()
+(
+    test -z "$1" && { >&2 echo "USAGE: varfish-import-cases DIR+"; exit 1; }
+    for path in "$@"; do
+        test -e $path/peds || { >&2 echo "Found no directory $path/peds"; continue; }
+        project=$(basename $path | cut -d - -f 2-)
+        for ped in $path/peds/*.ped; do
+            name=$(basename ${ped%-N1-DNA1-*.ped})
+            sample=$(basename ${ped%.ped})
+            if [[ -e $ped.done ]] && [[ "${FORCE}" != 1 ]]; then
+                continue
+            fi
+
+            varfish-manage import_case \
+                --project-uuid $project \
+                --case-name $name \
+                --index-name $sample \
+                --path-genotypes $path/tsvs/*$sample.gts.tsv.gz \
+                --path-db-info $path/tsvs/*$sample.db-info*.tsv.gz \
+                --path-ped $ped \
+                $(if [[ "${FORCE}" == 1 ]]; then \
+                    echo --force; \
+                fi) \
+            && touch $ped.done
+        done
+    done
+)
+
+# -----------------------------------------------------------------------------------------------
+# Function varfish-import-cases-sv
+#
+# Run the manage.py import_case command.
+# -----------------------------------------------------------------------------------------------
+
+varfish-import-cases-sv()
+(
+    test -z "$1" && { >&2 echo "USAGE: varfish-import-cases DIR+"; exit 1; }
+    for path in "$@"; do
+        test -e $path/peds || { >&2 echo "Found no directory $path/peds"; continue; }
+        project=$(basename $path | cut -d - -f 2-)
+        for ped in $path/peds/*.ped; do
+            name=$(basename ${ped%-N1-DNA1-*.ped})
+            sample=$(basename ${ped%.ped})
+            if [[ -e $ped.done ]] && [[ "${FORCE}" != 1 ]]; then
+                continue
+            fi
+
+            varfish-manage import_case \
+                --project-uuid $project \
+                --case-name $name \
+                --index-name $sample \
+                --path-genotypes $path/tsvs/*$sample.gts.tsv.gz \
+                --path-feature-effects $path/tsvs/*$sample.feature-effects.tsv.gz \
+                --path-db-info $path/tsvs/*$sample.db-info*.tsv.gz \
+                --path-ped $ped \
+                $(if [[ "${FORCE}" == 1 ]]; then \
+                    echo --force; \
+                fi) \
+            && touch $ped.done
+        done
+    done
+)
