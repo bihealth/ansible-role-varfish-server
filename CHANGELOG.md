@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.1.4
+
+- Adding new parameter `--path-bam-qc` to `bashrc.varfish`.
+
 ## v0.1.3
 
 - Deploying varfish-specific bash scripts/functions.
