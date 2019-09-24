@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.1.5
+
+- Fixing issue with missing BAM QC TSV file.
+
 ## v0.1.4
 
 - Adding new parameter `--path-bam-qc` to `bashrc.varfish`.
