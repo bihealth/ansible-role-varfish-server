@@ -23,7 +23,9 @@ varfish-import-cases()
                 --index-name $sample \
                 --path-genotypes $path/tsvs/*$sample.gts.tsv.gz \
                 --path-db-info $path/tsvs/*$sample.db-info*.tsv.gz \
-                --path-bam-qc $path/tsvs/*$sample.bam-qc*.tsv.gz \
+                $(if [[ -e $path/tsvs/*$sample.bam-qc*.tsv.gz ]]; then \
+                    echo --path-bam-qc $path/tsvs/*$sample.bam-qc*.tsv.gz; \
+                fi) \
                 --path-ped $ped \
                 $(if [[ "${FORCE}" == 1 ]]; then \
                     echo --force; \
@@ -59,7 +61,9 @@ varfish-import-cases-sv()
                 --path-genotypes $path/tsvs/*$sample.gts.tsv.gz \
                 --path-feature-effects $path/tsvs/*$sample.feature-effects.tsv.gz \
                 --path-db-info $path/tsvs/*$sample.db-info*.tsv.gz \
-                --path-bam-qc $path/tsvs/*$sample.bam-qc*.tsv.gz \
+                $(if [[ -e $path/tsvs/*$sample.bam-qc*.tsv.gz ]]; then \
+                    echo --path-bam-qc $path/tsvs/*$sample.bam-qc*.tsv.gz; \
+                fi) \
                 --path-ped $ped \
                 $(if [[ "${FORCE}" == 1 ]]; then \
                     echo --force; \
