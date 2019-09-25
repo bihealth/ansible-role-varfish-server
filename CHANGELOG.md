@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.1.6
+
+- Fixing file existence bug.
+
 ## v0.1.5
 
 - Fixing issue with missing BAM QC TSV file.
