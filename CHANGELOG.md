@@ -1,6 +1,6 @@
 # Changelog
 
-## HEAD (unreleased)
+## v0.1.7
 
 - Adding support for deploying VarFish Kiosk
 
