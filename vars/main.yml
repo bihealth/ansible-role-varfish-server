@@ -44,6 +44,10 @@ sodar_core_app_systemd_env_snippet: |
   VARFISH_ENABLE_SVS={{ 1 if varfish_enable_svs else 0 }}
   VARFISH_KIOSK_MODE={{ 1 if varfish_enable_kiosk_mode else 0 }}
 
+  {% if varfish_login_page_text %}
+  VARFISH_LOGIN_PAGE_TEXT={{ varfish_login_page_text | quote }}
+  {% endif %}
+
   {% if varfish_enable_kiosk_mode or varfish_enable_annotator %}
   VARFISH_KIOSK_CONDA_PATH=/srv/{{ sodar_core_app_name }}-web/{{ varfish_version }}-conda/bin/activate
 

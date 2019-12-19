@@ -59,3 +59,6 @@ varfish_annotator_data_base_url: https://file-public.bihealth.org/transient/varf
 
 # Default email (is none).
 varfish_kiosk_user_email: ""
+
+# Default login page text.
+varfish_login_page_text: ""

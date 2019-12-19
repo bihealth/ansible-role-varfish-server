@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.1.8
+
+- Allowing to put text on the login page.
+
 ## v0.1.7
 
 - Adding support for deploying VarFish Kiosk
