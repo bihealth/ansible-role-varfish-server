@@ -1,5 +1,8 @@
 ---
 
+# Required when kiosk mode is enabled
+# varfish_kiosk_user_password:
+
 # Also see the defaults of bihealth.sodar_core_app.
 
 # Git repository to get app from.
@@ -41,3 +44,18 @@ varfish_exomiser_prioritiser_api_url: ""
 
 # Enable experimental and unsupported SV filtration settings.
 varfish_enable_svs: false
+
+# Enable/disable kiosk mode.
+varfish_enable_kiosk_mode: false
+
+# Install varfish-annotator.
+varfish_enable_annotator: false
+
+# Default version of data release for annotator.
+varfish_annotator_data_release: "20191129"
+
+# Default base URL for downloading VarFish annotator files.
+varfish_annotator_data_base_url: https://file-public.bihealth.org/transient/varfish
+
+# Default email (is none).
+varfish_kiosk_user_email: ""

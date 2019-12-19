@@ -42,6 +42,17 @@ sodar_core_app_systemd_env_snippet: |
   VARFISH_EXOMISER_PRIORITISER_API_URL={{ varfish_exomiser_prioritiser_api_url }}
 
   VARFISH_ENABLE_SVS={{ 1 if varfish_enable_svs else 0 }}
+  VARFISH_KIOSK_MODE={{ 1 if varfish_enable_kiosk_mode else 0 }}
+
+  {% if varfish_enable_kiosk_mode or varfish_enable_annotator %}
+  VARFISH_KIOSK_CONDA_PATH=/srv/{{ sodar_core_app_name }}-web/{{ varfish_version }}-conda/bin/activate
+
+  {% set release_base %}/srv/{{ sodar_core_app_name }}-web/varfish-annotator/{{ varfish_annotator_data_release }}{% endset %}
+  VARFISH_KIOSK_VARFISH_ANNOTATOR_DB_PATH={{ release_base }}/varfish-annotator-db-{{ varfish_annotator_data_release }}.h2.db
+  VARFISH_KIOSK_VARFISH_ANNOTATOR_ENSEMBL_SER_PATH={{ release_base }}/varfish-annotator-transcripts-{{ varfish_annotator_data_release }}/hg19_ensembl.ser
+  VARFISH_KIOSK_VARFISH_ANNOTATOR_REFSEQ_SER_PATH={{ release_base }}/varfish-annotator-transcripts-{{ varfish_annotator_data_release }}/hg19_refseq_curated.ser
+  VARFISH_KIOSK_VARFISH_ANNOTATOR_REFERENCE_PATH={{ release_base }}/varfish-annotator-db-{{ varfish_annotator_data_release }}/GRCh37/reference/hs37d5/hs37d5.fa
+  {% endif %}
 
 # bihealth.python3 --------------------------------------------------------------------------------
 

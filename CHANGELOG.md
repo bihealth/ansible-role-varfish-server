@@ -1,5 +1,9 @@
 # Changelog
 
+## HEAD (unreleased)
+
+- Adding support for deploying VarFish Kiosk
+
 ## v0.1.6
 
 - Fixing file existence bug.

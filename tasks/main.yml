@@ -1,5 +1,11 @@
 ---
 
+- name: install dependencies
+  yum:
+    name:
+      - yum
+    state: present
+
 - name: copy VarFish bashrc
   copy:
     src: bashrc.varfish
@@ -14,3 +20,71 @@
     marker: "# {mark} include VarFish app bashrc"
     block: |
       source /srv/{{ sodar_core_app_name }}-web/.bashrc.varfish
+
+- name: install conda environment
+  shell: |
+    set -euo pipefail
+
+    export TMPDIR=$(mktemp -d)
+    trap "rm -rf $TMPDIR /srv/{{ sodar_core_app_name }}-web/{{ varfish_version }}-conda" ERR
+    trap "rm -rf $TMPDIR" EXIT ERR
+    pushd $TMPDIR
+    wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+    bash Miniconda3-latest-Linux-x86_64.sh -b -p \
+        /srv/{{ sodar_core_app_name }}-web/{{ varfish_version }}-conda
+
+    set +e
+    source /srv/{{ sodar_core_app_name }}-web/{{ varfish_version }}-conda/bin/activate
+    set -e
+
+    conda create -c bioconda -y -n varfish-annotator \
+      varfish-annotator-cli \
+      htslib \
+      bcftools
+  args:
+    executable: /bin/bash
+    creates: /srv/{{ sodar_core_app_name }}-web/{{ varfish_version }}-conda/envs/varfish-annotator
+  when: varfish_enable_kiosk_mode or varfish_enable_annotator
+
+- name: create directory for download varfish annotator data to
+  file:
+    path: /srv/{{ sodar_core_app_name }}-web/varfish-annotator/{{ varfish_annotator_data_release }}
+    state: directory
+    mode: a=rx
+  when: varfish_enable_kiosk_mode or varfish_enable_annotator
+
+- name: download and extract varfish annotator data release
+  unarchive:
+    remote_src: true
+    validate_certs: false
+    src: "{{ varfish_annotator_data_base_url }}/varfish-annotator-{{ varfish_annotator_data_release }}.tar.gz"
+    dest: /srv/{{ sodar_core_app_name }}-web/varfish-annotator/{{ varfish_annotator_data_release }}
+    creates: /srv/{{ sodar_core_app_name }}-web/varfish-annotator/{{ varfish_annotator_data_release }}/varfish-annotator-db-{{ varfish_annotator_data_release }}.h2.db
+  when: varfish_enable_kiosk_mode or varfish_enable_annotator
+
+- name: create upload directory
+  file:
+    path: /srv/{{ sodar_core_app_name }}-web/{{ varfish_version }}/{{ sodar_core_app_name }}/media
+    owner: varfish
+    group: varfish
+    mode: ug=rwx,o=
+    state: directory
+  when: varfish_enable_kiosk_mode or varfish_enable_annotator
+
+- name: create kiosk user
+  become: true
+  become_user: varfish
+  shell: |
+    set -xeo pipefail
+    source $HOME/.bashrc
+    echo "from django.contrib.auth import get_user_model; User = get_user_model(); \
+      User.objects.create_user('kiosk_user', \
+      '{{ varfish_kiosk_user_email }}', '{{ varfish_kiosk_user_password }}')" \
+    | {{ sodar_core_app_name }}-manage shell
+    touch /srv/{{ sodar_core_app_name }}-web/.kiosk_user-created
+  args:
+    executable: /bin/bash
+    chdir: /srv/{{ sodar_core_app_name }}-web/{{ sodar_core_app_version }}
+    creates: /srv/{{ sodar_core_app_name }}-web/.kiosk_user-created
+  # no_log: "{{ sodar_core_app_enable_no_log }}"
+  when: varfish_enable_kiosk_mode or varfish_enable_annotator
