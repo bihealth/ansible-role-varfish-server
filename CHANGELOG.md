@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.2.0
+
+- Integration of S3 support.
+
 ## v0.1.8
 
 - Allowing to put text on the login page.

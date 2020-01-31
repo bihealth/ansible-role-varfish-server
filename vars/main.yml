@@ -28,8 +28,17 @@ sodar_core_app_backend_plugins:
   - "timeline_backend"
 
 sodar_core_app_systemd_env_snippet: |
-  {% if varfish_sentry_dsn|length>0 %}
-  DJANGO_SENTRY_DSN="{{ varfish_sentry_dsn }}"
+  {% if varfish_enable_sentry %}
+  ENABLE_SENTRY={{ 1 if varfish_enable_sentry else 0 }}
+  SENTRY_DSN="{{ varfish_sentry_dsn }}"
+  {% endif %}
+
+  {% if varfish_enable_upload_s3 %}
+  VARFISH_USE_S3=1
+  AWS_ACCESS_KEY_ID={{ varfish_upload_s3_access_key|to_json() }}
+  AWS_SECRET_ACCESS_KEY={{ varfish_upload_s3_secret_key|to_json() }}
+  AWS_STORAGE_BUCKET_NAME={{ varfish_upload_s3_bucket_name|to_json() }}
+  AWS_S3_ENDPOINT_URL={{ varfish_upload_s3_url|to_json() }}
   {% endif %}
 
   VARFISH_ENABLE_CADD={{ 1 if varfish_enable_cadd else 0 }}
