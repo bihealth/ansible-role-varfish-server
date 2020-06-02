@@ -39,6 +39,13 @@ varfish_enable_cadd: false
 # REST API URL for CADD
 varfish_cadd_rest_api_url: ""
 
+# Whether or not to enable "Submit to CADD" (optional, license required for
+# commercial usage).)
+varfish_enable_cadd_submission: false
+
+# Default CADD release to use.
+varfish_cadd_submission_release: null
+
 # Whether or not to enable Exomiser prioritiser.
 varfish_enable_exomiser_prioritiser: false
 

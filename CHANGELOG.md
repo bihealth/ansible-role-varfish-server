@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.2.1
+
+- Allowing CADD submission configuration.
+
 ## v0.2.0
 
 - Integration of S3 support.

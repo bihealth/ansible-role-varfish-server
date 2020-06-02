@@ -67,6 +67,11 @@ sodar_core_app_systemd_env_snippet: |
   VARFISH_KIOSK_VARFISH_ANNOTATOR_REFERENCE_PATH={{ release_base }}/varfish-annotator-db-{{ varfish_annotator_data_release }}/GRCh37/reference/hs37d5/hs37d5.fa
   {% endif %}
 
+  {% if varfish_enable_cadd_submission %}
+  VARFISH_ENABLE_CADD_SUBMISSION={{ 1 if varfish_enable_cadd_submission else 0}}
+  {% if varfish_cadd_submission_release %}VARFISH_CADD_SUBMISSION_RELEASE={{ varfish_cadd_submission_release}}{% endif %}
+  {% endif %}
+
 # bihealth.python3 --------------------------------------------------------------------------------
 
 python3_versions:
