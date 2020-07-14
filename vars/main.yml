@@ -70,6 +70,8 @@ sodar_core_app_systemd_env_snippet: |
   {% if varfish_enable_cadd_submission %}
   VARFISH_ENABLE_CADD_SUBMISSION={{ 1 if varfish_enable_cadd_submission else 0}}
   {% if varfish_cadd_submission_release %}VARFISH_CADD_SUBMISSION_RELEASE={{ varfish_cadd_submission_release}}{% endif %}
+
+  {% if varfish_enable_extra_annos %}VARFISH_ENABLE_EXTRA_ANNOS=1{% endif %}
   {% endif %}
 
 # bihealth.python3 --------------------------------------------------------------------------------

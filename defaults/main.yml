@@ -79,6 +79,9 @@ varfish_enable_upload_s3: false
 # S3 bucket name for upload.
 varfish_upload_s3_bucket_name: varfish-server
 
+# Whether or not to enable extra annotations.
+varfish_enable_extra_annos: false
+
 # The following variables have to be set if `varfish_enable_upload_s3` is `true`.
 
 # URL to S3 for upload.
