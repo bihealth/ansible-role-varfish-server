@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.3.3
+
+- Adding `varfish_enable_extra_annos` configuration variable.
+
 ## v0.2.1
 
 - Allowing CADD submission configuration.
