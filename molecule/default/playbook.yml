@@ -55,6 +55,8 @@
     varfish_celery_workers_default: 1
     varfish_celery_workers_query: 1
     varfish_celery_workers_import: 1
+    varfish_celery_workers_export: 1
+    varfish_celery_workers_maintenance: 1
     # bihealth.ssl_certs --------------------------------------------------------------------------
     ssl_certs_certs:
       - name: instance
