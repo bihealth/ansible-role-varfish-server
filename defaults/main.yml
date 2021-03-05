@@ -20,6 +20,12 @@ varfish_celery_workers_query: 8
 # Number of celery workers to spawn for import queue.
 varfish_celery_workers_import: 1
 
+# Number of celery workers to spawn for export queue.
+varfish_celery_workers_export: 1
+
+# Number of celery workers to spawn for maintenance queue.
+varfish_celery_workers_maintenance: 1
+
 # Optional DSN for Sentry integration.
 varfish_enable_sentry: false
 
