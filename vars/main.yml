@@ -23,7 +23,15 @@ sodar_core_app_celeryd_workers:
     queues:
       - import
     concurrency: "{{ varfish_celery_workers_import }}"
-
+  - name: export
+    queues:
+      - export
+    concurrency: "{{ varfish_celery_workers_export }}"
+  - name: maintenance
+    queues:
+      - maintenance
+    concurrency: "{{ varfish_celery_workers_maintenance }}"
+    
 sodar_core_app_backend_plugins:
   - "timeline_backend"
 
