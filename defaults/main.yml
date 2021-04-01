@@ -49,6 +49,10 @@ varfish_cadd_rest_api_url: ""
 # commercial usage).)
 varfish_enable_cadd_submission: false
 
+# Whether or not to enable "Submit to SPANR" (optional, some restrictions
+# by SPANR authors apply and SPANR has no HTTPS (sic!))
+varfish_enable_spanr_submission: false
+
 # Default CADD release to use.
 varfish_cadd_submission_release: null
 

@@ -10,6 +10,9 @@ sodar_core_app_email_prefix: "{{ varfish_email_prefix }}"
 
 sodar_core_app_celery_enabled: true
 
+sodar_core_vuejs_apps:
+  - varfish
+
 sodar_core_app_celeryd_workers:
   - name: default
     queues:
@@ -31,7 +34,7 @@ sodar_core_app_celeryd_workers:
     queues:
       - maintenance
     concurrency: "{{ varfish_celery_workers_maintenance }}"
-    
+
 sodar_core_app_backend_plugins:
   - "timeline_backend"
 
@@ -77,6 +80,10 @@ sodar_core_app_systemd_env_snippet: |
 
   {% if varfish_enable_cadd_submission %}
   VARFISH_ENABLE_CADD_SUBMISSION={{ 1 if varfish_enable_cadd_submission else 0}}
+  {% if varfish_cadd_submission_release %}VARFISH_CADD_SUBMISSION_RELEASE={{ varfish_cadd_submission_release}}{% endif %}
+
+  {% if varfish_enable_spanr_submission %}
+  VARFISH_ENABLE_SPANR_SUBMISSION={{ 1 if varfish_enable_spanr_submission else 0}}
   {% if varfish_cadd_submission_release %}VARFISH_CADD_SUBMISSION_RELEASE={{ varfish_cadd_submission_release}}{% endif %}
 
   {% if varfish_enable_extra_annos %}VARFISH_ENABLE_EXTRA_ANNOS=1{% endif %}
